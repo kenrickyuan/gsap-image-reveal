@@ -13,6 +13,7 @@ function App() {
   useEffect(() => {
     tl.to(container, 0, { css: { visibility: "visible" } })
     .to(imageReveal, 1.4, {width:'0%', ease: Power2.easeInOut})
+    .from(img, 1.4, {scale: 1.6, ease: Power2.easeInOut, delay: -1.4})
   });
 
   return (
