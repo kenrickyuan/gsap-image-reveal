@@ -1,45 +1,27 @@
-import React, { useRef, useEffect, useState } from "react";
-import { TweenMax, Power3 } from "gsap";
-import "./App.css";
+import React, { useRef, useEffect } from "react";
+import "./App.scss";
+import Sneakers from "./images/sneakers.jpg";
+import CSSRulePlugin from "gsap/CSSRulePlugin";
+import { TimelineLite, Power2 } from "gsap";
 
 function App() {
-  let circle = useRef(null);
-  let circleRed = useRef(null);
-  let circleBlue = useRef(null);
-  let app = useRef(null);
+  let container = useRef(null);
+  let img = useRef(null);
+  let imageReveal = CSSRulePlugin.getRule(".img-container:after");
 
-  const [circleState, setState] = useState(false);
-
-  const handleExpand = () => {
-    TweenMax.to(circleRed, 0.5, {width: 200, height: 200, ease: Power3.easeOut})
-    setState(true);
-  }
-
-  const handleShrink = () => {
-    TweenMax.to(circleRed, 0.5, {width: 75, height: 75, ease: Power3.easeOut})
-    setState(false);
-  }
-
+  const tl = new TimelineLite();
   useEffect(() => {
-    TweenMax.to(app, 0, {css: {visibility: 'visible' }})
-    TweenMax.staggerFrom([circle, circleRed, circleBlue], 1.5, {opacity: 0, x: 80, ease: Power3.easeOut}, .4 )
-    // TweenMax.from(circle, 2, { opacity: 0, x: 100, ease: Power3.easeOut });
-    // TweenMax.from(circleRed, 2, { opacity: 0, x: 80, ease: Power3.easeOut, delay: .4 });
-    // TweenMax.from(circleBlue, 2, { opacity: 0, x: 80, ease: Power3.easeOut, delay: .7 });
-  }, []);
+    tl.to(container, 0, { css: { visibility: "visible" } })
+    .to(imageReveal, 1.4, {width:'0%', ease: Power2.easeInOut})
+  });
 
   return (
-    <div className="App" ref={el => (app = el)}>
-      <header className="App-header">
-        <div className="circle-container">
-          <div ref={el => (circle = el)} className="circle"></div>
-          <div
-            onClick={circleState !== true ? handleExpand : handleShrink}
-            ref={el => (circleRed = el)} className="circle red">
-          </div>
-          <div ref={el => (circleBlue = el)} className="circle blue"></div>
+    <div ref={el => (container = el)} className="container">
+      <>
+        <div className="img-container">
+          <img ref={el => (img = el)} src={Sneakers} alt="sneakers" />
         </div>
-      </header>
+      </>
     </div>
   );
 }
